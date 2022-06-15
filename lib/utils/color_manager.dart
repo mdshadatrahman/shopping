@@ -10,4 +10,5 @@ class AppColors{
   static Color nameTextColor = const Color(0xff323232);
   static Color priceTextColor = const Color(0xff646464);
   static Color addButtonBackground = const Color(0xffFFCCE4);
+  static Color searchTextColor = const Color(0xff1D1D1D);
 }
