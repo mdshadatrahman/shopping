@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shopping/screens/product_details.dart';
 import 'package:shopping/utils/color_manager.dart';
 
-import '../widgets/search_widget.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -28,7 +26,48 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: height * 0.07),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: SearchWidget(width: width, height: height),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+                height: height * 0.06,
+                width: width,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: AppColors.white,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: width * 0.8,
+                      child: TextFormField(
+                        style: TextStyle(
+                          color: AppColors.searchTextColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        onSaved: (String? value) {
+                          // This optional block of code can be used to run
+                          // code when the user saves the form.
+                        },
+                        validator: (String? value) {
+                          return (value != null && value.contains('@'))
+                              ? 'Do not use the @ char.'
+                              : null;
+                        },
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        //Implement functionality
+                      },
+                      child: SvgPicture.asset('assets/icons/search_icon.svg'),
+                    ),
+                  ],
+                ),
+              ),
             ),
             SizedBox(height: height * 0.035),
             SizedBox(
@@ -65,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (_) => const ProductDetails(),
+                                      builder: (_) => ProductDetails(),
                                     ),
                                   );
                                 },
