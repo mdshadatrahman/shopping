@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shopping/screens/product_details.dart';
 import 'package:shopping/utils/color_manager.dart';
+import 'package:http/http.dart' as http;
+
+import '../utils/app_urls.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,6 +18,24 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool inStock = true;
   int itemCount = 0;
+
+  //!Api starts
+  Future? profile_data;
+  Future profile() async {
+
+    var response =
+    await http.get(Uri.parse(AppUrl.profile));
+    if (response.statusCode == 201) {
+      print('Get post collected' + response.body);
+      var userData1 = jsonDecode(response.body)['data'];
+      print(userData1);
+      return userData1;
+    } else {
+      print("post have no Data${response.body}");
+      var userData1 = jsonDecode(response.body)['data'];
+      return userData1;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
