@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,6 +7,7 @@ import 'package:shopping/utils/values.dart';
 import '../utils/app_urls.dart';
 import '../utils/color_manager.dart';
 import '../widgets/search_widget.dart';
+
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({required this.productDetailsUrl, Key? key})
