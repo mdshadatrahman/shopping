@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:shimmer/shimmer.dart';
+import 'package:shopping/utils/values.dart';
 import '../utils/app_urls.dart';
 import '../utils/color_manager.dart';
 import '../widgets/search_widget.dart';
@@ -18,7 +19,7 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-  int itemCount = 0;
+
 
   Future productDetail() async {
     var response = await http.get(Uri.parse(AppUrl.productDetails + widget.productDetailsUrl));
@@ -78,35 +79,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                     // print(snapshot.data);
                     switch (snapshot.connectionState){
                       case ConnectionState.waiting:
-                        return SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 5,
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.grey.withOpacity(0.3),
-                            highlightColor: Colors.grey.withOpacity(0.1),
-                            child: ListView.builder(
-                              itemBuilder: (_, __) => Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      width: width,
-                                      height: height,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              itemCount: 10,
-                            ),
-                          ),
-                        );
+                        return const Center(child: CircularProgressIndicator());
                       default:
                         if (snapshot.hasError) {
                           Text('Error: ${snapshot.error}');
                         } else {
-
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -321,132 +298,128 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ),
                                     ],
                                   ),
-                                  itemCount == 0
-                                      ? Positioned(
-                                    left: width * 0.4,
-                                    top: height * 0.11,
-                                    child: Stack(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              itemCount++;
-                                            });
-                                          },
-                                          child: Image.asset(
-                                              'assets/images/polygon.png'),
-                                        ),
-                                        Positioned(
-                                          left: width * 0.055,
-                                          top: height * 0.03,
-                                          child: const Text(
-                                            'এটি\nকিনুন',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.white,
+                                  Obx( ()=>
+                                    Values.itemCountCart == 0
+                                        ? Positioned(
+                                      left: width * 0.4,
+                                      top: height * 0.11,
+                                      child: Stack(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Values.incrementCartItem();
+                                            },
+                                            child: Image.asset(
+                                                'assets/images/polygon.png'),
+                                          ),
+                                          Positioned(
+                                            left: width * 0.055,
+                                            top: height * 0.03,
+                                            child: const Text(
+                                              'এটি\nকিনুন',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                        : Positioned(
+                                      left: width * 0.31,
+                                      top: height * 0.038,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: height * 0.05,
+// width: width * 0.38,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(18),
+                                              color:
+                                              AppColors.errorRed.withOpacity(0.5),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  height: height * 0.04,
+                                                  child: FloatingActionButton(
+                                                    backgroundColor: AppColors
+                                                        .circleButtonColorPink1,
+                                                    onPressed: () {
+                                                      Values.decrementCartItem();
+                                                    },
+                                                    child: const Icon(Icons.remove),
+                                                    elevation: 0,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  '${Values.itemCountCart} পিস',
+                                                  style: TextStyle(
+                                                    color: AppColors.errorRedText,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: height * 0.04,
+                                                  child: FloatingActionButton(
+                                                    backgroundColor: AppColors
+                                                        .circleButtonColorBlue1,
+                                                    onPressed: () {
+                                                      Values.incrementCartItem();
+                                                    },
+                                                    child: const Icon(Icons.add),
+                                                    elevation: 0,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                      : Positioned(
-                                    left: width * 0.31,
-                                    top: height * 0.038,
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          height: height * 0.05,
-// width: width * 0.38,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(18),
-                                            color:
-                                            AppColors.errorRed.withOpacity(0.5),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                          SizedBox(height: height * 0.02),
+                                          Stack(
                                             children: [
-                                              SizedBox(
-                                                height: height * 0.04,
-                                                child: FloatingActionButton(
-                                                  backgroundColor: AppColors
-                                                      .circleButtonColorPink1,
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      itemCount--;
-                                                    });
-                                                  },
-                                                  child: const Icon(Icons.remove),
-                                                  elevation: 0,
+                                              Image.asset('assets/images/polygon.png'),
+                                              Positioned(
+                                                left: width * 0.07,
+                                                top: height * 0.025,
+                                                child: Column(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                        'assets/icons/box.svg'),
+                                                    SizedBox(height: height * 0.01),
+                                                    const Text(
+                                                      'কার্ট',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                              Text(
-                                                '$itemCount পিস',
-                                                style: TextStyle(
-                                                  color: AppColors.errorRedText,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: height * 0.04,
-                                                child: FloatingActionButton(
-                                                  backgroundColor: AppColors
-                                                      .circleButtonColorBlue1,
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      itemCount++;
-                                                    });
-                                                  },
-                                                  child: const Icon(Icons.add),
-                                                  elevation: 0,
+                                              Positioned(
+                                                left: width * 0.13,
+                                                child: CircleAvatar(
+                                                  radius: 10,
+                                                  backgroundColor:
+                                                  AppColors.addButtonBackground,
+                                                  child: Text(
+                                                    Values.itemCountCart.toString(),
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 16,
+                                                      color: AppColors.purpleText,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ),
-                                        SizedBox(height: height * 0.02),
-                                        Stack(
-                                          children: [
-                                            Image.asset('assets/images/polygon.png'),
-                                            Positioned(
-                                              left: width * 0.07,
-                                              top: height * 0.025,
-                                              child: Column(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      'assets/icons/box.svg'),
-                                                  SizedBox(height: height * 0.01),
-                                                  const Text(
-                                                    'কার্ট',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Positioned(
-                                              left: width * 0.13,
-                                              child: CircleAvatar(
-                                                radius: 10,
-                                                backgroundColor:
-                                                AppColors.addButtonBackground,
-                                                child: Text(
-                                                  itemCount.toString(),
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 16,
-                                                    color: AppColors.purpleText,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
