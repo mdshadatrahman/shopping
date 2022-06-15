@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../utils/color_manager.dart';
 import '../widgets/search_widget.dart';
+
 class ProductDetails extends StatefulWidget {
   const ProductDetails({Key? key}) : super(key: key);
 
@@ -21,12 +22,12 @@ class _ProductDetailsState extends State<ProductDetails> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
             },
             icon: Icon(Icons.arrow_back, color: AppColors.nameTextColor),
           ),
-          title:  Text(
+          title: Text(
             'প্রোডাক্ট ডিটেইল',
             style: TextStyle(
               fontSize: 20,
@@ -39,20 +40,49 @@ class _ProductDetailsState extends State<ProductDetails> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: SearchWidget(width: width, height: height, hintText: 'কাঙ্ক্ষিত পণ্যটি খুঁজুন'),
+              child: SearchWidget(
+                  width: width,
+                  height: height,
+                  hintText: 'কাঙ্ক্ষিত পণ্যটি খুঁজুন'),
             ),
-
             SizedBox(height: height * 0.05),
-            Container(
-              height: 308,
-              width: 248,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: AppColors.white,
-              ),
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  height: height * 0.35,
+                  width: width * 0.15,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
+                    color: AppColors.white,
+                  ),
+                ),
+                Container(
+                  height: height * 0.4,
+                  width: width * 0.62,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.white,
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/pringles.png'),
+                      )),
+                ),
+                Container(
+                  height: height * 0.35,
+                  width: width * 0.15,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        bottomLeft: Radius.circular(20)),
+                    color: AppColors.white,
+                  ),
+                ),
+              ],
+            ),
           ],
-
         ),
       ),
     );
